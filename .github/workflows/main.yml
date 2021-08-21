@@ -1,0 +1,19 @@
+
+name: Windows
+on: [push]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Preparing environment...
+      env:
+        NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
+        RDP_PASSWORD: ${{ secrets.RDP_PASSWORD }}
+      run: |
+        Invoke-WebRequest https://raw.githubusercontent.com/tramble515/Windows-RDP/main/configure.ps1
+    - name: Preparing environment...
+      run: ./configure.ps1
+    - name: Creating tunnel with ngrok...
+      run: ./ngrok/ngrok tcp 3389
